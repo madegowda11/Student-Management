@@ -1,0 +1,156 @@
+package com.dcl.studentapp.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import com.dcl.studentapp.conn.Connector;
+import com.dcl.studentapp.dto.Student;
+
+public class StudentDaoImp implements StudentDao {
+
+	Connection con = null;
+
+	public StudentDaoImp() {
+		this.con = Connector.getConnect();
+	}
+
+	@Override
+	public boolean insertStudent(Student s) {
+		PreparedStatement ps = null;
+		int res = 0;
+		String query = "INSERT INTO STUDENT VALUES(0,?,?,?,?,?,?,SYSDATE())";
+		try {
+			ps = con.prepareStatement(query);
+//		String name=s.getSname();
+//		ps.setString(1,name);
+
+			ps.setString(1, s.getSname());
+			ps.setLong(2, s.getPhone());
+			ps.setString(3, s.getEmail());
+			ps.setString(4, s.getBranch());
+			ps.setString(5, s.getLocation());
+			ps.setString(6, s.getPassword());
+
+			res = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (res > 0)
+			return true;
+		else
+
+			return false;
+	}
+
+	@Override
+	public boolean updateStudent(Student s) {
+		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		int res = 0;
+		String query = "UPDATE STUDENT SET SNAME=?,PHONE=?, EMAIL=?, BRANCH=?,LOCATION=?,PASSWORD=? WHERE SID=?";
+		try {
+			ps = con.prepareStatement(query);
+//			String name=s.getSname();
+//			ps.setString(1, name);
+			ps.setString(1, s.getSname());
+			ps.setLong(2, s.getPhone());
+			ps.setString(3, s.getEmail());
+			ps.setString(4, s.getBranch());
+			ps.setString(5, s.getLocation());
+			ps.setString(6, s.getPassword());
+			ps.setInt(7, s.getSid());
+
+			res = ps.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (res > 0)
+			return true;
+		else
+			return false;
+	}
+
+	@Override
+	public boolean deleteStudent(Student s) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Student getstudent(long phone, String password) {
+		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Student s = null;
+		String query = "SELECT * FROM STUDENT WHERE PHONE=?  AND PASSWORD=?";
+
+		try {
+			ps = con.prepareStatement(query);
+			ps.setLong(1, phone);
+			ps.setString(2, password);
+
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				s = new Student();
+//				int id=rs.getInt("sid");
+//				s.setSid(id);
+
+				s.setSid(rs.getInt("sid"));
+				s.setSname(rs.getString("sname"));
+				s.setPhone(rs.getLong("phone"));
+				s.setEmail(rs.getString("email"));
+
+				s.setBranch(rs.getString("branch"));
+				s.setLocation(rs.getString("location"));
+				s.setPassword(rs.getString("password"));
+				s.setDate(rs.getString("date"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return s;
+	}
+
+	@Override
+	public Student getStudent(String email, long phone) {
+		String query = "SELECT * FROM STUDENT WHERE EMAIL=? AND PHONE=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Student s = null;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, email);
+			ps.setLong(2, phone);
+
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				s = new Student();
+				s.setSid(rs.getInt("sid"));
+				s.setSname(rs.getString("sname"));
+				s.setPhone(rs.getLong("phone"));
+				s.setEmail(rs.getString("email"));
+				s.setBranch(rs.getString("branch"));
+				s.setLocation(rs.getString("location"));
+				s.setPassword(rs.getString("password"));
+				s.setDate(rs.getString("date"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return s;
+	}
+
+	@Override
+	public ArrayList<Student> getStudent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+}
