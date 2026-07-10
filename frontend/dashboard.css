@@ -1,0 +1,39 @@
+@charset "UTF-8";
+body{
+    background:#f4f7fc;
+    font-family:'Segoe UI',sans-serif;
+}
+
+.navbar-brand{
+    font-size:28px;
+    font-weight:bold;
+}
+
+h2{
+    color:#0d6efd;
+    font-weight:bold;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+}
+
+.card-header{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.table th{
+    background:#343a40;
+    color:white;
+}
+
+.table tr:hover{
+    background:#f1f5ff;
+}
+
+.alert{
+    text-align:center;
+    font-weight:bold;
+}
